@@ -145,22 +145,26 @@
 
         @media screen and (max-width: 480px) {
             .tooltip {
-                left: auto;
-                right: 0;
+                left: 50%;
+                right: auto;
                 top: calc(100% + 5px);
                 max-width: none;
-                width: 100%;
+                width: calc(100vw - 40px);
+                transform: translateX(-50%);
             }
 
             .tooltip::before {
-                left: auto;
-                right: 15px;
-                border-right: 6px solid transparent;
+                left: 50%;
+                right: auto;
+                top: -6px;
                 border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
                 border-bottom: 6px solid #333;
                 border-top: none;
+                transform: translateX(-50%);
             }
         }
+
     </style>
 </head>
 <body>
@@ -295,6 +299,9 @@
             let resultHTML = `
                 <div>⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
                 <div>📊 Half Target: <strong>${riskBasedTP.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
+                <div class="help-icon" style="display: inline;">ℹ️
+                    <div class="tooltip">Half Target represents the price level<br>where the potential profit equals the potential loss,<br>considering the current leverage.<br>It provides a balanced risk-reward target.</div>
+                </div>
             `;
 
             // Add target price only if targetPercent is provided
