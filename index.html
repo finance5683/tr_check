@@ -152,7 +152,7 @@
             <label for="position">
                 🔍 POSITION
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Choose LONG when anticipating price increase, SHORT when expecting price decrease. This determines your market direction bias.</div>
+                <div class="tooltip">Choose your position type:<br><br>LONG: Enter when expecting price increase<br>SHORT: Enter when expecting price decrease</div>
             </label>
             <select id="position" style="font-weight: bold;">
                 <option value="long">📈 LONG</option>
@@ -164,7 +164,7 @@
             <label for="entryPrice">
                 ▶️ Entry Price
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Enter your intended entry price for the position. This can be either the current market price or your target entry price.</div>
+                <div class="tooltip">Set your position entry price<br><br>• Current market price<br>• Or your target entry price<br>• Use proper decimal points</div>
             </label>
             <input type="text" id="entryPrice" placeholder="Enter Entry Price" 
                    oninput="formatInput(this)" 
@@ -176,7 +176,7 @@
             <label for="lossCutPrice">
                 ⏸️ Loss Cut Price
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Set your stop-loss price. For LONG positions, set below entry price. For SHORT positions, set above entry price. This defines your maximum risk threshold.</div>
+                <div class="tooltip">Set your stop-loss price:<br><br>LONG Position:<br>• Must be BELOW entry price<br><br>SHORT Position:<br>• Must be ABOVE entry price</div>
             </label>
             <input type="text" id="lossCutPrice" placeholder="Enter Loss Cut Price" 
                    oninput="formatInput(this)" 
@@ -186,14 +186,16 @@
 
         <div class="row">
             <label for="targetPercent">
-                🎯 Target Profit (%)
+                🎯 User's Target Profit (%)
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Set your desired profit target as a percentage of your entry price.</div>
+                <div class="tooltip">User Target Profit Setting<br><br>• Pure target profit (%)<br>• Not related to leverage<br>• Based on user preference<br>• Independent from risk calculation</div>
             </label>
             <select id="targetPercent" style="font-weight: bold;">
                 <option value="5">5%</option>
-                <option value="10">10%</option>
+                <option value="10" selected>10%</option>
+                <option value="15">15%</option>
                 <option value="20">20%</option>
+                <option value="25">25%</option>
                 <option value="30">30%</option>
                 <option value="50">50%</option>
                 <option value="100">100%</option>
@@ -204,7 +206,7 @@
             <label for="coverPercent">
                 🔄️ Coverable Percentage(%)
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Select the percentage of capital you're willing to risk. This determines the appropriate leverage based on your risk tolerance and position size.</div>
+                <div class="tooltip">Set risk tolerance percentage<br><br>• Determines leverage size<br>• Lower % = Lower risk<br>• Higher % = Higher risk<br>• Choose based on your<br>risk management strategy</div>
             </label>
             <select id="coverPercent" style="font-weight: bold;">
                 <option value="5">5%</option>
@@ -286,7 +288,7 @@
             resultElement.innerHTML = `
                 <div>⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
                 <div>📊 Half Target: <strong>${riskBasedTP.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
-                <div>🎯 Final Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
+                <div>🎯 User's Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
             `;
             resultElement.style.color = "#333";
         }
