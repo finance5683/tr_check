@@ -65,17 +65,32 @@
             position: absolute;
             background-color: #333;
             color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 12px 15px;
+            border-radius: 8px;
             font-size: 14px;
-            width: max-content;
-            max-width: 300px;
-            top: 30px;
-            left: 0;
+            line-height: 1.4;
+            width: 280px;
+            top: -5px;
+            left: calc(100% + 10px);
             z-index: 1000;
             opacity: 0;
             transition: all 0.2s ease-in-out;
             pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid #333;
+        }
+        label {
+            position: relative;
         }
         label:hover .tooltip {
             visibility: visible;
@@ -176,12 +191,12 @@
                 <div class="tooltip">Set your desired profit target as a percentage of your entry price.</div>
             </label>
             <select id="targetPercent" style="font-weight: bold;">
+                <option value="5">5%</option>
+                <option value="10">10%</option>
+                <option value="20">20%</option>
+                <option value="30">30%</option>
                 <option value="50">50%</option>
-                <option value="100" selected>100%</option>
-                <option value="150">150%</option>
-                <option value="200">200%</option>
-                <option value="300">300%</option>
-                <option value="500">500%</option>
+                <option value="100">100%</option>
             </select>
         </div>
 
@@ -257,7 +272,12 @@
             const lossPercent = Math.abs((entryPrice - lossCutPrice) / entryPrice) * 100;
             const leverage = coverPercent / lossPercent;
 
-            // Calculate target prices based on target percentage
+            // Calculate target prices
+            const riskBasedTP = position === "long"
+                ? entryPrice + riskAmount
+                : entryPrice - riskAmount;
+                
+            // Calculate percentage-based target price
             const targetPriceAmount = (entryPrice * targetPercent) / 100;
             const targetPrice = position === "long" 
                 ? entryPrice + targetPriceAmount
@@ -265,7 +285,8 @@
 
             resultElement.innerHTML = `
                 <div>⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
-                <div>🎯 Target Price (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
+                <div>📊 Half Target: <strong>${riskBasedTP.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
+                <div>🎯 Final Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
             `;
             resultElement.style.color = "#333";
         }
