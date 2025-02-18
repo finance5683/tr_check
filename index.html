@@ -169,6 +169,22 @@
         </div>
 
         <div class="row">
+            <label for="targetPercent">
+                🎯 Target Profit (%)
+                <span class="help-icon">ℹ️</span>
+            </label>
+            <div class="tooltip">Set your desired profit target as a percentage of your entry price.</div>
+            <select id="targetPercent" style="font-weight: bold;">
+                <option value="50">50%</option>
+                <option value="100" selected>100%</option>
+                <option value="150">150%</option>
+                <option value="200">200%</option>
+                <option value="300">300%</option>
+                <option value="500">500%</option>
+            </select>
+        </div>
+
+        <div class="row">
             <label for="coverPercent">
                 🔄️ Coverable Percentage(%)
                 <span class="help-icon">ℹ️</span>
@@ -192,14 +208,6 @@
     </div>
 
     <script>
-        const feeTable = {
-            1: { maker: 0.02, taker: 0.04 },
-            5: { maker: 0.03, taker: 0.05 },
-            10: { maker: 0.04, taker: 0.06 },
-            20: { maker: 0.05, taker: 0.07 },
-            50: { maker: 0.08, taker: 0.1 },
-        };
-
         function formatInput(input) {
             let value = input.value.replace(/,/g, '');
             if (isNaN(value)) return;
@@ -225,6 +233,7 @@
             const entryPrice = parseFormattedNumber(document.getElementById("entryPrice").value);
             const lossCutPrice = parseFormattedNumber(document.getElementById("lossCutPrice").value);
             const coverPercent = parseFloat(document.getElementById("coverPercent").value);
+            const targetPercent = parseFloat(document.getElementById("targetPercent").value);
 
             const resultElement = document.getElementById("result");
 
@@ -247,21 +256,15 @@
             const lossPercent = Math.abs((entryPrice - lossCutPrice) / entryPrice) * 100;
             const leverage = coverPercent / lossPercent;
 
-            const nearestLeverage = Object.keys(feeTable).reduce((prev, curr) => 
-                Math.abs(curr - leverage) < Math.abs(prev - leverage) ? curr : prev
-            );
-
-            const fees = feeTable[nearestLeverage];
-            const feeAmount = entryPrice * (fees.taker / 100);
-
-            let halfTakeProfit = position === "long" 
-                ? entryPrice + riskAmount + feeAmount 
-                : entryPrice - riskAmount - feeAmount;
+            // Calculate target prices based on target percentage
+            const targetPriceAmount = (entryPrice * targetPercent) / 100;
+            const targetPrice = position === "long" 
+                ? entryPrice + targetPriceAmount
+                : entryPrice - targetPriceAmount;
 
             resultElement.innerHTML = `
                 <div>⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
-                <div>⏏️ Half TP: <strong>${halfTakeProfit.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
-                <div>*️⃣ Est. Fee: <strong>${feeAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} (${fees.taker}%)</strong></div>
+                <div>🎯 Target Price (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
             `;
             resultElement.style.color = "#333";
         }
