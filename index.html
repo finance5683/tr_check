@@ -297,8 +297,8 @@
                 : entryPrice - riskAmount;
                 
             let resultHTML = `
-                <div>⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
-                <div>
+                <div class="result-row">⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
+                <div class="result-row">
                     📊 Half Target: <strong>${riskBasedTP.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
                     <span class="help-icon">ℹ️
                         <div class="tooltip">Half Target represents the price level<br>where the potential profit equals the potential loss,<br>considering the current leverage.<br>It provides a balanced risk-reward target.</div>
