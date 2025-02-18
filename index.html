@@ -146,11 +146,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>✅ Leverage Check</h1>
+        <h1>💫 Smart Trade Calculator</h1>
 
         <div class="row">
             <label for="position">
-                🔍 User's Position Type
+                🔍 Position Type
                 <span class="help-icon">ℹ️</span>
                 <div class="tooltip">Select Trading Direction:<br><br>LONG: Enter for upward trend<br>SHORT: Enter for downward trend</div>
             </label>
@@ -162,7 +162,7 @@
 
         <div class="row">
             <label for="entryPrice">
-                ▶️ User's Entry Price
+                ▶️ Entry Price
                 <span class="help-icon">ℹ️</span>
                 <div class="tooltip">Entry Price Setting<br><br>• Current market price<br>• Or target entry level<br>• Use precise decimals</div>
             </label>
@@ -174,7 +174,7 @@
 
         <div class="row">
             <label for="lossCutPrice">
-                ⏸️ User's Stop-Loss Price
+                ⏸️ Stop-Loss Price
                 <span class="help-icon">ℹ️</span>
                 <div class="tooltip">Stop-Loss Configuration:<br><br>LONG Position:<br>• Set BELOW entry price<br><br>SHORT Position:<br>• Set ABOVE entry price</div>
             </label>
@@ -198,7 +198,7 @@
 
         <div class="row">
             <label for="coverPercent">
-                🔄️ User's Risk Tolerance (%)
+                🔄️ Risk Tolerance (%)
                 <span class="help-icon">ℹ️</span>
                 <div class="tooltip">Risk Management Setting<br><br>• Determines leverage ratio<br>• Lower % = Conservative<br>• Higher % = Aggressive<br>• Choose based on your<br>trading strategy</div>
             </label>
@@ -285,7 +285,7 @@
                     ? entryPrice + targetPriceAmount
                     : entryPrice - targetPriceAmount;
                 
-                resultHTML += `<div>🎯 Final Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>`;
+                resultHTML += `<div>🎯 User's Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>`;
             }
 
             resultElement.innerHTML = resultHTML;
