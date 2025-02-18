@@ -69,14 +69,15 @@
             border-radius: 6px;
             font-size: 14px;
             width: max-content;
-            max-width: 250px;
-            top: 100%;
+            max-width: 300px;
+            top: 30px;
             left: 0;
-            z-index: 100;
+            z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.2s ease-in-out;
+            pointer-events: none;
         }
-        .help-icon:hover + .tooltip {
+        label:hover .tooltip {
             visibility: visible;
             opacity: 1;
         }
@@ -136,8 +137,8 @@
             <label for="position">
                 🔍 POSITION
                 <span class="help-icon">ℹ️</span>
+                <div class="tooltip">Choose LONG when anticipating price increase, SHORT when expecting price decrease. This determines your market direction bias.</div>
             </label>
-            <div class="tooltip">Choose LONG when anticipating price increase, SHORT when expecting price decrease. This determines your market direction bias.</div>
             <select id="position" style="font-weight: bold;">
                 <option value="long">📈 LONG</option>
                 <option value="short">📉 SHORT</option>
@@ -148,8 +149,8 @@
             <label for="entryPrice">
                 ▶️ Entry Price
                 <span class="help-icon">ℹ️</span>
+                <div class="tooltip">Enter your intended entry price for the position. This can be either the current market price or your target entry price.</div>
             </label>
-            <div class="tooltip">Enter your intended entry price for the position. This can be either the current market price or your target entry price.</div>
             <input type="text" id="entryPrice" placeholder="Enter Entry Price" 
                    oninput="formatInput(this)" 
                    onblur="formatOnBlur(this)" 
@@ -160,8 +161,8 @@
             <label for="lossCutPrice">
                 ⏸️ Loss Cut Price
                 <span class="help-icon">ℹ️</span>
+                <div class="tooltip">Set your stop-loss price. For LONG positions, set below entry price. For SHORT positions, set above entry price. This defines your maximum risk threshold.</div>
             </label>
-            <div class="tooltip">Set your stop-loss price. For LONG positions, set below entry price. For SHORT positions, set above entry price. This defines your maximum risk threshold.</div>
             <input type="text" id="lossCutPrice" placeholder="Enter Loss Cut Price" 
                    oninput="formatInput(this)" 
                    onblur="formatOnBlur(this)" 
@@ -172,8 +173,8 @@
             <label for="targetPercent">
                 🎯 Target Profit (%)
                 <span class="help-icon">ℹ️</span>
+                <div class="tooltip">Set your desired profit target as a percentage of your entry price.</div>
             </label>
-            <div class="tooltip">Set your desired profit target as a percentage of your entry price.</div>
             <select id="targetPercent" style="font-weight: bold;">
                 <option value="50">50%</option>
                 <option value="100" selected>100%</option>
@@ -188,8 +189,8 @@
             <label for="coverPercent">
                 🔄️ Coverable Percentage(%)
                 <span class="help-icon">ℹ️</span>
+                <div class="tooltip">Select the percentage of capital you're willing to risk. This determines the appropriate leverage based on your risk tolerance and position size.</div>
             </label>
-            <div class="tooltip">Select the percentage of capital you're willing to risk. This determines the appropriate leverage based on your risk tolerance and position size.</div>
             <select id="coverPercent" style="font-weight: bold;">
                 <option value="5">5%</option>
                 <option value="10" selected>10%</option>
