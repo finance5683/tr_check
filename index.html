@@ -59,9 +59,10 @@
             color: #666;
             cursor: help;
             font-size: 14px;
+            position: relative;
         }
         .tooltip {
-            visibility: hidden;
+            display: none;
             position: absolute;
             background-color: #333;
             color: white;
@@ -89,11 +90,9 @@
             border-bottom: 6px solid transparent;
             border-right: 6px solid #333;
         }
-        label {
-            position: relative;
-        }
-        label:hover .tooltip {
-            visibility: visible;
+        .help-icon:hover .tooltip,
+        .result-row .help-icon:hover .tooltip {
+            display: block;
             opacity: 1;
         }
         input, select, button {
@@ -142,6 +141,16 @@
             justify-content: flex-start;
             flex-direction: column;
         }
+        .result-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .result-row .help-icon {
+            display: inline-flex;
+            align-items: center;
+        }
 
         @media screen and (max-width: 480px) {
             .tooltip {
@@ -164,7 +173,6 @@
                 transform: translateX(-50%);
             }
         }
-
     </style>
 </head>
 <body>
@@ -174,8 +182,9 @@
         <div class="row">
             <label for="position">
                 🔍 Position Type
-                <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Select Trading Direction:<br><br>LONG: Enter for upward trend<br>SHORT: Enter for downward trend</div>
+                <span class="help-icon">ℹ️
+                    <div class="tooltip">Select Trading Direction:<br><br>LONG: Enter for upward trend<br>SHORT: Enter for downward trend</div>
+                </span>
             </label>
             <select id="position" style="font-weight: bold;">
                 <option value="long">📈 LONG</option>
@@ -186,8 +195,9 @@
         <div class="row">
             <label for="entryPrice">
                 ▶️ Entry Price
-                <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Entry Price Setting<br><br>• Current market price<br>• Or target entry level<br>• Use precise decimals</div>
+                <span class="help-icon">ℹ️
+                    <div class="tooltip">Entry Price Setting<br><br>• Current market price<br>• Or target entry level<br>• Use precise decimals</div>
+                </span>
             </label>
             <input type="text" id="entryPrice" placeholder="Enter Entry Price" 
                    oninput="formatInput(this)" 
@@ -198,8 +208,9 @@
         <div class="row">
             <label for="lossCutPrice">
                 ⏸️ Stop-Loss Price
-                <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Stop-Loss Configuration:<br><br>LONG Position:<br>• Set BELOW entry price<br><br>SHORT Position:<br>• Set ABOVE entry price</div>
+                <span class="help-icon">ℹ️
+                    <div class="tooltip">Stop-Loss Configuration:<br><br>LONG Position:<br>• Set BELOW entry price<br><br>SHORT Position:<br>• Set ABOVE entry price</div>
+                </span>
             </label>
             <input type="text" id="lossCutPrice" placeholder="Enter Loss Cut Price" 
                    oninput="formatInput(this)" 
@@ -210,8 +221,9 @@
         <div class="row">
             <label for="targetPercent">
                 🎯 User's Target Profit (%)
-                <span class="help-icon">ℹ️</span>
-                <div class="tooltip">User Target Profit Setting<br><br>• Pure target profit (%)<br>• Not related to leverage<br>• Based on user preference<br>• Independent from risk calculation</div>
+                <span class="help-icon">ℹ️
+                    <div class="tooltip">User Target Profit Setting<br><br>• Pure target profit (%)<br>• Not related to leverage<br>• Based on user preference<br>• Independent from risk calculation</div>
+                </span>
             </label>
             <input type="text" id="targetPercent" placeholder="Enter Target Profit (%)" 
                    oninput="formatInput(this)" 
@@ -222,8 +234,9 @@
         <div class="row">
             <label for="coverPercent">
                 🔄️ Risk Tolerance (%)
-                <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Risk Management Setting<br><br>• Determines leverage ratio<br>• Lower % = Conservative<br>• Higher % = Aggressive<br>• Choose based on your trading strategy</div>
+                <span class="help-icon">ℹ️
+                    <div class="tooltip">Risk Management Setting<br><br>• Determines leverage ratio<br>• Lower % = Conservative<br>• Higher % = Aggressive<br>• Choose based on your trading strategy</div>
+                </span>
             </label>
             <select id="coverPercent" style="font-weight: bold;">
                 <option value="5">5%</option>
@@ -301,9 +314,9 @@
                 <div class="result-row">
                     📊 Half Target: <strong>${riskBasedTP.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
                     <span class="help-icon">ℹ️
-                        <div class="tooltip">Half Target represents the price level
-where the potential profit equals the potential loss,
-considering the current leverage.
+                        <div class="tooltip">Half Target represents the price level<br>
+where the potential profit equals the potential loss,<br>
+considering the current leverage.<br>
 It provides a balanced risk-reward target.</div>
                     </span>
                 </div>
@@ -316,7 +329,12 @@ It provides a balanced risk-reward target.</div>
                     ? entryPrice + targetPriceAmount
                     : entryPrice - targetPriceAmount;
                 
-                resultHTML += `<div>🎯 User's Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>`;
+                resultHTML += `
+                    <div class="result-row">
+                        🎯 User's Target (${targetPercent}%): 
+                        <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
+                    </div>
+                `;
             }
 
             resultElement.innerHTML = resultHTML;
