@@ -44,12 +44,41 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 10px;
+            position: relative;
         }
         label {
             margin-bottom: 8px;
             font-size: 16px;
             font-weight: 600;
             color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .help-icon {
+            margin-left: 8px;
+            color: #666;
+            cursor: help;
+            font-size: 14px;
+        }
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            width: max-content;
+            max-width: 250px;
+            top: 100%;
+            left: 0;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .help-icon:hover + .tooltip {
+            visibility: visible;
+            opacity: 1;
         }
         input, select, button {
             width: 100%;
@@ -86,7 +115,7 @@
             font-size: 18px;
             font-weight: bold;
             text-align: left;
-            line-height: 1.5; /* 줄 간격 조절 */
+            line-height: 1.5;
             color: #333;
             background-color: #f0f0f0;
             padding: 15px;
@@ -104,7 +133,11 @@
         <h1>✅ Leverage Check</h1>
 
         <div class="row">
-            <label for="position">🔍 POSITION:</label>
+            <label for="position">
+                🔍 POSITION
+                <span class="help-icon">ℹ️</span>
+            </label>
+            <div class="tooltip">Choose LONG when anticipating price increase, SHORT when expecting price decrease. This determines your market direction bias.</div>
             <select id="position" style="font-weight: bold;">
                 <option value="long">📈 LONG</option>
                 <option value="short">📉 SHORT</option>
@@ -112,7 +145,11 @@
         </div>
 
         <div class="row">
-            <label for="entryPrice">▶️ Entry Price:</label>
+            <label for="entryPrice">
+                ▶️ Entry Price
+                <span class="help-icon">ℹ️</span>
+            </label>
+            <div class="tooltip">Enter your intended entry price for the position. This can be either the current market price or your target entry price.</div>
             <input type="text" id="entryPrice" placeholder="Enter Entry Price" 
                    oninput="formatInput(this)" 
                    onblur="formatOnBlur(this)" 
@@ -120,7 +157,11 @@
         </div>
 
         <div class="row">
-            <label for="lossCutPrice">⏸️ Loss Cut Price:</label>
+            <label for="lossCutPrice">
+                ⏸️ Loss Cut Price
+                <span class="help-icon">ℹ️</span>
+            </label>
+            <div class="tooltip">Set your stop-loss price. For LONG positions, set below entry price. For SHORT positions, set above entry price. This defines your maximum risk threshold.</div>
             <input type="text" id="lossCutPrice" placeholder="Enter Loss Cut Price" 
                    oninput="formatInput(this)" 
                    onblur="formatOnBlur(this)" 
@@ -128,7 +169,11 @@
         </div>
 
         <div class="row">
-            <label for="coverPercent">🔄️ Coverable Percentage(%):</label>
+            <label for="coverPercent">
+                🔄️ Coverable Percentage(%)
+                <span class="help-icon">ℹ️</span>
+            </label>
+            <div class="tooltip">Select the percentage of capital you're willing to risk. This determines the appropriate leverage based on your risk tolerance and position size.</div>
             <select id="coverPercent" style="font-weight: bold;">
                 <option value="5">5%</option>
                 <option value="10" selected>10%</option>
