@@ -150,9 +150,9 @@
 
         <div class="row">
             <label for="position">
-                🔍 POSITION
+                🔍 User's Position Type
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Choose your position type:<br><br>LONG: Enter when expecting price increase<br>SHORT: Enter when expecting price decrease</div>
+                <div class="tooltip">Select Trading Direction:<br><br>LONG: Enter for upward trend<br>SHORT: Enter for downward trend</div>
             </label>
             <select id="position" style="font-weight: bold;">
                 <option value="long">📈 LONG</option>
@@ -162,9 +162,9 @@
 
         <div class="row">
             <label for="entryPrice">
-                ▶️ Entry Price
+                ▶️ User's Entry Price
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Set your position entry price<br><br>• Current market price<br>• Or your target entry price<br>• Use proper decimal points</div>
+                <div class="tooltip">Entry Price Setting<br><br>• Current market price<br>• Or target entry level<br>• Use precise decimals</div>
             </label>
             <input type="text" id="entryPrice" placeholder="Enter Entry Price" 
                    oninput="formatInput(this)" 
@@ -174,9 +174,9 @@
 
         <div class="row">
             <label for="lossCutPrice">
-                ⏸️ Loss Cut Price
+                ⏸️ User's Stop-Loss Price
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Set your stop-loss price:<br><br>LONG Position:<br>• Must be BELOW entry price<br><br>SHORT Position:<br>• Must be ABOVE entry price</div>
+                <div class="tooltip">Stop-Loss Configuration:<br><br>LONG Position:<br>• Set BELOW entry price<br><br>SHORT Position:<br>• Set ABOVE entry price</div>
             </label>
             <input type="text" id="lossCutPrice" placeholder="Enter Loss Cut Price" 
                    oninput="formatInput(this)" 
@@ -190,23 +190,17 @@
                 <span class="help-icon">ℹ️</span>
                 <div class="tooltip">User Target Profit Setting<br><br>• Pure target profit (%)<br>• Not related to leverage<br>• Based on user preference<br>• Independent from risk calculation</div>
             </label>
-            <select id="targetPercent" style="font-weight: bold;">
-                <option value="5">5%</option>
-                <option value="10" selected>10%</option>
-                <option value="15">15%</option>
-                <option value="20">20%</option>
-                <option value="25">25%</option>
-                <option value="30">30%</option>
-                <option value="50">50%</option>
-                <option value="100">100%</option>
-            </select>
+            <input type="text" id="targetPercent" placeholder="Enter Target Profit (%)" 
+                   oninput="formatInput(this)" 
+                   onblur="formatOnBlur(this)" 
+                   inputmode="decimal">
         </div>
 
         <div class="row">
             <label for="coverPercent">
-                🔄️ Coverable Percentage(%)
+                🔄️ User's Risk Tolerance (%)
                 <span class="help-icon">ℹ️</span>
-                <div class="tooltip">Set risk tolerance percentage<br><br>• Determines leverage size<br>• Lower % = Lower risk<br>• Higher % = Higher risk<br>• Choose based on your<br>risk management strategy</div>
+                <div class="tooltip">Risk Management Setting<br><br>• Determines leverage ratio<br>• Lower % = Conservative<br>• Higher % = Aggressive<br>• Choose based on your<br>trading strategy</div>
             </label>
             <select id="coverPercent" style="font-weight: bold;">
                 <option value="5">5%</option>
@@ -251,12 +245,12 @@
             const entryPrice = parseFormattedNumber(document.getElementById("entryPrice").value);
             const lossCutPrice = parseFormattedNumber(document.getElementById("lossCutPrice").value);
             const coverPercent = parseFloat(document.getElementById("coverPercent").value);
-            const targetPercent = parseFloat(document.getElementById("targetPercent").value);
+            const targetPercent = parseFormattedNumber(document.getElementById("targetPercent").value);
 
             const resultElement = document.getElementById("result");
 
             if (isNaN(entryPrice) || isNaN(lossCutPrice)) {
-                resultElement.textContent = "Please fill out All Required Fields.";
+                resultElement.textContent = "Please fill out Required Fields (Entry Price and Loss Cut Price).";
                 resultElement.style.color = "red";
                 return;
             }
@@ -274,22 +268,27 @@
             const lossPercent = Math.abs((entryPrice - lossCutPrice) / entryPrice) * 100;
             const leverage = coverPercent / lossPercent;
 
-            // Calculate target prices
+            // Calculate risk-based target price
             const riskBasedTP = position === "long"
                 ? entryPrice + riskAmount
                 : entryPrice - riskAmount;
                 
-            // Calculate percentage-based target price
-            const targetPriceAmount = (entryPrice * targetPercent) / 100;
-            const targetPrice = position === "long" 
-                ? entryPrice + targetPriceAmount
-                : entryPrice - targetPriceAmount;
-
-            resultElement.innerHTML = `
+            let resultHTML = `
                 <div>⏫ Leverage: <strong>x ${leverage.toFixed(2)}</strong></div>
                 <div>📊 Half Target: <strong>${riskBasedTP.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
-                <div>🎯 User's Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>
             `;
+
+            // Add target price only if targetPercent is provided
+            if (!isNaN(targetPercent) && targetPercent > 0) {
+                const targetPriceAmount = (entryPrice * targetPercent) / 100;
+                const targetPrice = position === "long" 
+                    ? entryPrice + targetPriceAmount
+                    : entryPrice - targetPriceAmount;
+                
+                resultHTML += `<div>🎯 Final Target (${targetPercent}%): <strong>${targetPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></div>`;
+            }
+
+            resultElement.innerHTML = resultHTML;
             resultElement.style.color = "#333";
         }
     </script>
