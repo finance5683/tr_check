@@ -154,25 +154,29 @@
 
         @media screen and (max-width: 480px) {
             .tooltip {
-                left: 50%;
-                right: auto;
-                top: calc(100% + 5px);
+                position: fixed;  /* 고정 위치로 변경 */
+                left: 20px;      /* 좌우 여백 20px */
+                right: 20px;     /* 좌우 여백 20px */
+                bottom: 20px;    /* 하단에서 20px 띄움 */
+                top: auto;       /* 상단 위치 자동 */
+                width: auto;     /* 너비 자동 */
+                transform: none; /* 기존 transform 제거 */
                 max-width: none;
-                width: calc(100vw - 40px);
-                transform: translateX(-50%);
+                z-index: 1001;   /* 더 높은 z-index */
             }
 
             .tooltip::before {
-                left: 50%;
-                right: auto;
-                top: -6px;
-                border-left: 6px solid transparent;
-                border-right: 6px solid transparent;
-                border-bottom: 6px solid #333;
-                border-top: none;
-                transform: translateX(-50%);
+                display: none;   /* 화살표 제거 */
+            }
+
+            /* iOS의 Safe Area를 고려한 패딩 추가 */
+            @supports (padding-bottom: env(safe-area-inset-bottom)) {
+                .tooltip {
+                    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+                }
             }
         }
+
     </style>
 </head>
 <body>
