@@ -154,26 +154,19 @@
 
         @media screen and (max-width: 480px) {
             .tooltip {
-                position: fixed;  /* 고정 위치로 변경 */
-                left: 20px;      /* 좌우 여백 20px */
-                right: 20px;     /* 좌우 여백 20px */
-                bottom: 20px;    /* 하단에서 20px 띄움 */
-                top: auto;       /* 상단 위치 자동 */
+                position: fixed;  /* 고정 위치 */
+                left: 20px;      /* 좌측 여백 */
+                right: 20px;     /* 우측 여백 */
+                top: 80px;       /* 상단에서 80px 위치에 고정 (메뉴 아래) */
                 width: auto;     /* 너비 자동 */
-                transform: none; /* 기존 transform 제거 */
+                transform: none; /* transform 제거 */
                 max-width: none;
-                z-index: 1001;   /* 더 높은 z-index */
+                z-index: 1001;   /* 높은 z-index */
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 그림자 추가 */
             }
 
             .tooltip::before {
                 display: none;   /* 화살표 제거 */
-            }
-
-            /* iOS의 Safe Area를 고려한 패딩 추가 */
-            @supports (padding-bottom: env(safe-area-inset-bottom)) {
-                .tooltip {
-                    padding-bottom: calc(12px + env(safe-area-inset-bottom));
-                }
             }
         }
 
